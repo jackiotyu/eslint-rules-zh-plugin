@@ -42,6 +42,18 @@
     "extensionPack": [
         "dbaeumer.vscode-eslint"
     ],
+    "contributes": {
+        "configuration": {
+            "title": "ESLint Chinese Rules ( eslint中文规则提示插件 )",
+            "properties": {
+                "eslint-rules-zh-plugin.enableErrorLens": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "是否开启行尾错误提示"
+                }
+            }
+        }
+    },
     "scripts": {},
     "devDependencies": {
         "@types/vscode": "^1.50.0",
