@@ -113,23 +113,25 @@ function activate(context) {
         provideHover
     }));
 
-    vscode.languages.onDidChangeDiagnostics(() => {
-        const editor = vscode.window.activeTextEditor;
-        if (editor) updateDiagnostics(editor)
-    });
-    vscode.window.onDidChangeActiveTextEditor((editor) => {
-        if (editor) updateDiagnostics(editor);
-    });
-    vscode.workspace.onDidChangeTextDocument((event) => {
-        const editor = vscode.window.activeTextEditor;
-        if (editor && editor.document.uri === event.document.uri) updateDiagnostics(editor)
-    });
-    vscode.workspace.onDidChangeConfiguration(e => {
-        // 监听配置启用/禁用
-        if(e.affectsConfiguration('eslint-rules-zh-plugin.enableErrorLens')) {
-            vscode.window.visibleTextEditors.forEach(editor => updateDiagnostics(editor));
-        }
-    })
+    context.subscriptions.push(
+        vscode.languages.onDidChangeDiagnostics(() => {
+            const editor = vscode.window.activeTextEditor;
+            if (editor) updateDiagnostics(editor)
+        }),
+        vscode.window.onDidChangeActiveTextEditor((editor) => {
+            if (editor) updateDiagnostics(editor);
+        }),
+        vscode.workspace.onDidChangeTextDocument((event) => {
+            const editor = vscode.window.activeTextEditor;
+            if (editor && editor.document.uri === event.document.uri) updateDiagnostics(editor)
+        }),
+        vscode.workspace.onDidChangeConfiguration(e => {
+            // 监听配置启用/禁用
+            if(e.affectsConfiguration('eslint-rules-zh-plugin.enableErrorLens')) {
+                vscode.window.visibleTextEditors.forEach(editor => updateDiagnostics(editor));
+            }
+        })
+    )
 }
 
 module.exports = {
